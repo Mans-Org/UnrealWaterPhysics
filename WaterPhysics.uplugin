@@ -1,0 +1,94 @@
+{
+  "FileVersion": 3,
+  "EngineVersion": "5.4",
+  "Version": 1,
+  "VersionName": "1.4.2",
+  "FriendlyName": "Water Physics",
+  "Description": "Plugin for adding water simulations to your physics bodies in Unreal Engine",
+  "Category": "Other",
+  "CreatedBy": "Mans Isaksson",
+  "CreatedByURL": "http://mansisaksson.com/view/about",
+  "DocsURL": "http://mansisaksson.com/view/water-physics-plugin",
+  "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/2d8710643bcf4e2b94a9154d0732b4af",
+  "SupportURL": "http://mansisaksson.com/view/support",
+  "CanContainContent": true,
+  "Modules": [
+    {
+      "Name": "WaterPhysics",
+      "Type": "Runtime",
+      "LoadingPhase": "PostDefault",
+      "WhitelistPlatforms": [
+        "Win64",
+        "Mac",
+        "Linux",
+        "Android",
+        "IOS"
+      ]
+    },
+    {
+      "Name": "OceanologyIntegration",
+      "Type": "Runtime",
+      "LoadingPhase": "None",
+      "WhitelistPlatforms": [
+        "Win64",
+        "Mac",
+        "Linux",
+        "Android",
+        "IOS"
+      ]
+    },
+    {
+      "Name": "RiverologyIntegration",
+      "Type": "Runtime",
+      "LoadingPhase": "None",
+      "WhitelistPlatforms": [
+        "Win64",
+        "Mac",
+        "Linux",
+        "Android",
+        "IOS"
+      ]
+    },
+    {
+      "Name": "UEWaterIntegration",
+      "Type": "Runtime",
+      "LoadingPhase": "None",
+      "WhitelistPlatforms": [
+        "Win64",
+        "Mac",
+        "Linux",
+        "Android",
+        "IOS"
+      ]
+    },
+    {
+      "Name": "WaterPhysicsEditor",
+      "Type": "Editor",
+      "LoadingPhase": "PostEngineInit",
+      "WhitelistPlatforms": [
+        "Win64",
+        "Mac",
+        "Linux"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "Water",
+      "Enabled": true,
+      "Optional": true
+    },
+    {
+      "Name": "Oceanology_Plugin",
+      "Enabled": true,
+      "Optional": true,
+      "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/c05ddfb639ac41a9b93f619803e2e3f2"
+    },
+    {
+      "Name": "Riverology_Plugin",
+      "Enabled": true,
+      "Optional": true,
+      "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/6f976ebef64c445c97feaa44ff4eda2d"
+    }
+  ]
+}
