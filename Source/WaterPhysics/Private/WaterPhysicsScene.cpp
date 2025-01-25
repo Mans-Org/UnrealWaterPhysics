@@ -1498,8 +1498,8 @@ void FWaterPhysicsScene::StepWaterBodies_Synchronous(TArray<TPair<const UActorCo
 			{
 				if (BodyTriangulationResult[i].TriangulatedBody.IndexList.Num() == 0)
 				{
-					BodyTriangulationResult.RemoveAtSwap(i, 1, false);
-					WaterBodies.RemoveAtSwap(i, 1, false);
+					BodyTriangulationResult.RemoveAtSwap(i, 1, EAllowShrinking::No);
+					WaterBodies.RemoveAtSwap(i, 1, EAllowShrinking::No);
 					i--;
 				}
 			}
