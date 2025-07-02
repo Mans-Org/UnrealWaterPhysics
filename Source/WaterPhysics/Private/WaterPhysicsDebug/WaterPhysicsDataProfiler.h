@@ -34,7 +34,7 @@ namespace WaterPhysicsDebug
 
 #define RUN_CAPTURE_FUNC(Expression) if (WaterPhysicsDebug::CurrentSessionWriter != nullptr) { Expression; }
 
-#define SCOPED_OBJECT_DATA_CAPTURE(ObjectName, Category, ...) WaterPhysicsDebug::FScopedEventData PREPROCESSOR_JOIN(ScopedWaterPhysicsEventData, __LINE__)(ObjectName, Category, __VA_ARGS__)
+#define SCOPED_OBJECT_DATA_CAPTURE(ObjectName, Category, ...) WaterPhysicsDebug::FScopedEventData PREPROCESSOR_JOIN(ScopedWaterPhysicsEventData, __LINE__)(ObjectName, Category, ##__VA_ARGS__)
 #define DEBUG_CAPTURE_STRING(Name, Value) RUN_CAPTURE_FUNC(WaterPhysicsDebug::CaptureString(Name, Value))
 #define DEBUG_CAPTURE_NUMBER(Name, Value) RUN_CAPTURE_FUNC(WaterPhysicsDebug::CaptureNumber(Name, Value))
 #define DEBUG_CAPTURE_USTRUCT(Name, Value) RUN_CAPTURE_FUNC(WaterPhysicsDebug::CaptureStruct(Name, TRemoveReference<decltype(Value)>::Type::StaticStruct(), (void*)&Value))
