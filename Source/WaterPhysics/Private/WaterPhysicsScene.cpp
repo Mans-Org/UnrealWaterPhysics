@@ -3,7 +3,6 @@
 #include "WaterPhysicsScene.h"
 #include "WaterPhysicsModule.h"
 #include "WaterPhysicsMath.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 #include "WaterPhysicsCollisionInterface.h"
 #include "WaterPhysicsDebug/WaterPhysicsDebugHelpers.h"
 #include "WaterPhysicsDebug/WaterPhysicsDataProfiler.h"
@@ -1540,9 +1539,7 @@ void FWaterPhysicsScene::StepWaterBodies_Parallel(TArray<TPair<const UActorCompo
 	{
 		DYNAMIC_CPUPROFILER_EVENT_SCOPE(StepWaterBody, "_%s.%s", *WaterBodies[Index].Key->GetName(), *WaterBodies[Index].Value->BodyName.ToString());
 
-#if ENGINE_VERSION_HIGHER_THAN(4, 27)
-		FOptionalTaskTagScope ParallelGameThreadScope(ETaskTag::EParallelGameThread);
-#endif
+		FTaskTagScope ParallelGameThreadScope(ETaskTag::EParallelGameThread);
 
 		const auto WaterBodyProcessingResult = ProcessWaterPhysicsBody(WaterBodies[Index].Key, *WaterBodies[Index].Value, SceneSettings);
 		if (WaterBodyProcessingResult.BodyInstance == nullptr)

@@ -1,7 +1,6 @@
 // Copyright Mans Isaksson. All Rights Reserved.
 
 #include "ActorComponentsSelectionCustomization.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 #include "WaterPhysicsTypes.h"
 #include "GameFramework/Actor.h"
 #include "Engine/Blueprint.h"
@@ -193,7 +192,7 @@ public:
 			SNew(SListViewSelectorDropdownMenu<FActorComponentSelectionComboEntryPtr>, SearchBox, ComponentListView)
 			[
 				SNew(SBorder)
-				.BorderImage(WaterPhysicsCompat::EditorStyle::GetBrush("Menu.Background"))
+				.BorderImage(FAppStyle::GetBrush("Menu.Background"))
 				.Padding(2)
 				[
 					SNew(SBox)
@@ -217,8 +216,8 @@ public:
 		]
 		.IsFocusable(true)
 		.ContentPadding(FMargin(5, 0))
-		.ButtonStyle(WaterPhysicsCompat::EditorStyle::Get(), "PropertyEditor.AssetComboStyle")
-		.ForegroundColor(WaterPhysicsCompat::EditorStyle::GetColor("PropertyEditor.AssetName.ColorAndOpacity"))
+		.ButtonStyle(FAppStyle::Get(), "PropertyEditor.AssetComboStyle")
+		.ForegroundColor(FAppStyle::GetColor("PropertyEditor.AssetName.ColorAndOpacity"))
 		.OnComboBoxOpened(this, &SActorComponentSelectionCombo::ClearSelection)
 		.OnMenuOpenChanged(this, &SActorComponentSelectionCombo::OnMenuOpenChanged);
 
@@ -334,7 +333,7 @@ public:
 		if (Entry->IsHeading())
 		{
 			return SNew(STableRow<TSharedPtr<FString>>, OwnerTable)
-				.Style(&WaterPhysicsCompat::EditorStyle::Get().GetWidgetStyle<FTableRowStyle>("TableView.NoHoverTableRow"))
+				.Style(&FAppStyle::Get().GetWidgetStyle<FTableRowStyle>("TableView.NoHoverTableRow"))
 				.ShowSelection(false)
 				[
 					SNew(SBox)
@@ -342,22 +341,22 @@ public:
 					[
 						SNew(STextBlock)
 						.Text(Entry->HeadingText)
-						.TextStyle(WaterPhysicsCompat::EditorStyle::Get(), TEXT("Menu.Heading"))
+						.TextStyle(FAppStyle::Get(), TEXT("Menu.Heading"))
 					]
 				];
 		}
 		else if (Entry->IsSeparator())
 		{
 			return SNew(STableRow<TSharedPtr<FString>>, OwnerTable)
-				.Style(&WaterPhysicsCompat::EditorStyle::Get().GetWidgetStyle<FTableRowStyle>("TableView.NoHoverTableRow"))
+				.Style(&FAppStyle::Get().GetWidgetStyle<FTableRowStyle>("TableView.NoHoverTableRow"))
 				.ShowSelection(false)
 				[
 					SNew(SBox)
 					.Padding(1.f)
 					[
 						SNew(SBorder)
-						.Padding(WaterPhysicsCompat::EditorStyle::GetMargin(TEXT("Menu.Separator.Padding")))
-						.BorderImage(WaterPhysicsCompat::EditorStyle::GetBrush(TEXT("Menu.Separator")))
+						.Padding(FAppStyle::GetMargin(TEXT("Menu.Separator.Padding")))
+						.BorderImage(FAppStyle::GetBrush(TEXT("Menu.Separator")))
 					]
 				];
 		}

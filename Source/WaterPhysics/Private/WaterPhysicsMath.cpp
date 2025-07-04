@@ -1,7 +1,6 @@
 // Copyright Mans Isaksson. All Rights Reserved.
 
 #include "WaterPhysicsMath.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 
 #include "PhysicsEngine/ConvexElem.h"
 #include "CollisionShape.h"

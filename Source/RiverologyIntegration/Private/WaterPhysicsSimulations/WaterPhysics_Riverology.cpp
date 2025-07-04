@@ -4,7 +4,6 @@
 #include "RiverologyIntegrationModule.h"
 #include "WaterPhysicsSettingsComponent.h"
 #include "WaterPhysicsSceneComponent.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 #include "Components/SplineComponent.h"
 #include "Misc/UObjectToken.h"
 

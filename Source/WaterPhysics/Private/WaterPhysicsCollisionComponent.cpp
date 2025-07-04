@@ -1,7 +1,6 @@
 // Copyright Mans Isaksson. All Rights Reserved.
 
 #include "WaterPhysicsCollisionComponent.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 #include "WaterPhysicsMath.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -83,7 +82,7 @@ namespace WaterPhysicsCollision
 				//
 				// This can be done by getting the reference transform of the root bone in component space, and then "un-rotate" 
 				// the relative component transform with this ref transform.
-				const FTransform RootBoneRefTransform = FTransform(WaterPhysicsCompat::GetSkeletalMeshAsset(SkeletalMeshComponent)->GetRefPoseMatrix(0));
+				const FTransform RootBoneRefTransform = FTransform(SkeletalMeshComponent->GetSkeletalMeshAsset()->GetRefPoseMatrix(0));
 				FinalTransform *= RootBoneRefTransform.Inverse();
 			}
 
@@ -189,7 +188,7 @@ FWaterPhysicsCollisionSetup UWaterPhysicsCollisionComponent::GenerateWaterPhysic
 		if (!IsValid(Mesh) || !Mesh->bAllowCPUAccess)
 			break;
 
-		FStaticMeshRenderData* RenderData = WaterPhysicsCompat::GetStaticMeshRenderData(Mesh);
+		FStaticMeshRenderData* RenderData = Mesh->GetRenderData();
 		if (!RenderData || !RenderData->LODResources.IsValidIndex(LOD))
 			break;
 
@@ -223,7 +222,7 @@ FWaterPhysicsCollisionSetup UWaterPhysicsCollisionComponent::GenerateWaterPhysic
 	}
 	case EWaterPhysicsCollisionType::MeshCollision:
 	{
-		UBodySetup* BodySetup = IsValid(Mesh) ? WaterPhysicsCompat::GetStaticMeshBodySetup(Mesh) : nullptr;
+		UBodySetup* BodySetup = IsValid(Mesh) ? Mesh->GetBodySetup() : nullptr;
 		if (!IsValid(BodySetup))
 			break;
 

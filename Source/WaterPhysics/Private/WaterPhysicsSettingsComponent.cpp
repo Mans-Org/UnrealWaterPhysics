@@ -1,7 +1,6 @@
 // Copyright Mans Isaksson. All Rights Reserved.
 
 #include "WaterPhysicsSettingsComponent.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 #include "WaterPhysicsCollisionComponent.h"
 #include "Components/PrimitiveComponent.h"
 

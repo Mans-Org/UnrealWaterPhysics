@@ -3,7 +3,7 @@
 #pragma once
 #include "DrawDebugHelpers.h"
 #include "WaterPhysicsTypes.h"
-#include "Stats/Stats2.h"
+#include "Stats/Stats.h"
 
 #if WITH_WATER_PHYS_DEBUG
 #define EXEC_WITH_WATER_PHYS_DEBUG(Block) Block

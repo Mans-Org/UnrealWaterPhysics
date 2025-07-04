@@ -1,7 +1,6 @@
 // Copyright Mans Isaksson 2021. All Rights Reserved.
 
 #include "WaterPhysicsSimulations/WaterPhysics_WaterBody.h"
-#include "WaterPhysicsCompatibilityLayer.h"
 #include "WaterPhysicsSettingsComponent.h"
 #include "WaterPhysicsSceneComponent.h"
 #include "WaterPhysicsSimulations/WaterPhysics_WaterVolume.h"
