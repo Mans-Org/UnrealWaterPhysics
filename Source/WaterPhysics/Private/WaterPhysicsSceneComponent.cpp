@@ -250,6 +250,16 @@ void UWaterPhysicsSceneComponent::StepWaterPhysics(FPhysScene* PhysScene, float 
 {
 	if (IsComponentTickEnabled())
 	{
+		auto World = GetWorld();
+		if(!World)
+		{
+			return;
+		}
+		auto WorldSettings = World->GetWorldSettings();
+		if(!WorldSettings)
+		{
+			return;
+		}
 		const FVector Gravity = FVector(0, 0, GetWorld()->GetWorldSettings() ? GetWorld()->GetWorldSettings()->GetGravityZ() : -980.f);
 		WaterPhysicsScene.StepWaterPhysicsScene(DeltaTime, Gravity, DefaultWaterPhysicsSettings, WaterInfoGetter, bWaterInfoGetterThreadSafe, WaterSurfaceProvider.Get(), this);
 
