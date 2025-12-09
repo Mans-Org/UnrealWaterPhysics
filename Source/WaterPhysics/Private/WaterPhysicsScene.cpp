@@ -1176,12 +1176,9 @@ void FWaterPhysicsScene::CalculateWaterForces(const UActorComponent* Component, 
 		TRACE_CPUPROFILER_EVENT_SCOPE(CalcViscousFluidResistance);
 		SCOPED_OBJECT_DATA_CAPTURE(TEXT("Viscous Fluid Resistance"), TEXT("Viscosity"));
 
-		#define USE_PER_TRIANGLE_CF 0
-
-		#if !USE_PER_TRIANGLE_CF
 		// We're using AvgFluidVelocity which is the sum total velocities of the fluid over all the triangles.
 		// A more accurate value might be to sum the "relative" velocities between the water and the triangles.
-		const FVector RelativeVelocity     = (BodyLinearVelocity  * 0.01f /* cm/s -> m/s */) - PersistantBodyFrame.AvgFluidVelocity;
+		const FVector RelativeVelocity     = PersistantBodyFrame.AvgFluidVelocity;
 		const float   RelativeVelocitySize = RelativeVelocity.Size();
 
 		const float FluidTravelLength = [&]()
@@ -1204,7 +1201,6 @@ void FWaterPhysicsScene::CalculateWaterForces(const UActorComponent* Component, 
 		const float Rn = (RelativeVelocitySize * FluidTravelLength) / (Settings.FluidKinematicViscocity * 0.000001f /* centistokes -> m2/s */);
 		const float Denominator = FMath::LogX(10.f, FMath::Max(5.f, Rn) + 100.f) - 2.f;
 		const float Cf = 0.075f / (Denominator * Denominator);
-		#endif
 		
 		for (const auto& TriangleData : PersistantBodyFrame.TriangleData)
 		{
@@ -1214,23 +1210,7 @@ void FWaterPhysicsScene::CalculateWaterForces(const UActorComponent* Component, 
 			const float   TangentalVelocitySize        = TangentalVelocitySizeSquared * InverseTangentalVelocitySize;
 			const FVector TangentalVelocityNormal      = InverseTangentalVelocitySize * TangentalVelocity;
 
-			#if USE_PER_TRIANGLE_CF
-			float MaxVertexDistanceToVelocityPlane = -BIG_NUMBER;
-			for (const auto& Vertex : SubmergedTriangles.VertexList)
-			{
-				const float DistToVelocityPlane = FVector::PointPlaneDist(Vertex.Position, TriangleData.Centroid, TangentalVelocityNormal);
-				MaxVertexDistanceToVelocityPlane = FMath::Max(DistToVelocityPlane, MaxVertexDistanceToVelocityPlane);
-			}
-			const float FluidTravelLength = FMath::Max(1.f, MaxVertexDistanceToVelocityPlane) * 0.01f /* cm -> m */;
-			
-			// Slight modification of ITTC 1957 model-ship correlation line for calculating coefficient of drag on a plate draged under water as a function of velocity and plate length.
-			// This version shifts the graph 100 to the left to have it tend towards inf at 0, then clamp at 5 to avoid exploding bodies.
-			// Approximation of reynolds number using the velocity of the fluid and the travel length of the fluid along the body.
-			const float Rn = (TangentalVelocitySize * FluidTravelLength) / (Settings.FluidKinematicViscocity * 0.000001f /* centistokes -> m2/s */);
-			const float Denominator = FMath::LogX(10.f, FMath::Max(5.f, Rn) + 100.f) - 2.f;
-			const float Cf = 0.075f / (Denominator * Denominator);
-			#endif
-
+			// -0.5 * fluid_density * Cf * triangle_geometries[i].area * tangental_velocity_normal * tangental_velocity_size_squared;
 			const FVector ResistanceForce = 0.5f * Settings.FluidDensity * Cf * TriangleData.Area * -TangentalVelocityNormal * TangentalVelocitySizeSquared * 100.f /* N -> cN */;
 			TotalResistanceForce.AddForce(ResistanceForce, TriangleData.Centroid, BodyCenterOfMass);
 
