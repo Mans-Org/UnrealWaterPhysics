@@ -5,10 +5,6 @@
 #include "PhysicsEngine/ConvexElem.h"
 #include "CollisionShape.h"
 
-#if WPC_PHYSICS_INTERFACE_PHYSX
-#include "PhysXPublic.h"
-#endif
-
 // NOTE: For now we follow the scaling behaviour of UE4 collision. However, UE4 collision scaling is a bit buggy so it's not optimal.
 
 void TransformSphereElem(FWaterPhysicsCollisionSetup::FSphereElem& SphereElem, const FTransform& Transform)
@@ -54,36 +50,6 @@ WaterPhysics::FIndexedTriangleMesh ExtractConvexElemTriangles(const struct FKCon
 
 	WaterPhysics::FIndexedTriangleMesh OutMesh;
 
-	#if WPC_PHYSICS_INTERFACE_PHYSX // UE4 does not use the FKConvexElem index list for PhysX
-	physx::PxConvexMesh* ConvexMesh = bMirrorX ? ConvexElem.GetMirroredConvexMesh() : ConvexElem.GetConvexMesh();
-	if (ConvexMesh != NULL)
-	{
-		const PxU8*   Indices  = ConvexMesh->getIndexBuffer();
-		const int32   NumPolys = ConvexMesh->getNbPolygons();
-
-		const PxVec3* Vertices    = ConvexMesh->getVertices();
-		const int32   NumVertices = ConvexMesh->getNbVertices();
-
-		for (int32 VertIdx = 0; VertIdx < NumVertices; ++VertIdx)
-			OutMesh.VertexList.Add(P2UVector(Vertices[VertIdx]));
-
-		PxHullPolygon PolyData;
-		for (int32 PolyIdx = 0; PolyIdx < NumPolys; ++PolyIdx)
-		{
-			if (ConvexMesh->getPolygonData(PolyIdx, PolyData))
-			{
-				for (int32 VertIdx = 2; VertIdx < PolyData.mNbVerts; ++VertIdx)
-				{
-					// Grab triangle indices that we hit
-					const int32 I0 = Indices[PolyData.mIndexBase];
-					const int32 I1 = Indices[PolyData.mIndexBase + (VertIdx - 1)];
-					const int32 I2 = Indices[PolyData.mIndexBase + VertIdx];
-					OutMesh.IndexList.Append({ I0, I1, I2 });
-				}
-			}
-		}
-	}
-	#elif WPC_WITH_CHAOS
 	OutMesh.VertexList = ConvexElem.VertexData;
 	OutMesh.IndexList = ConvexElem.IndexData;
 
@@ -100,7 +66,6 @@ WaterPhysics::FIndexedTriangleMesh ExtractConvexElemTriangles(const struct FKCon
 			OutMesh.IndexList[i+2] = Tmp;
 		}
 	}
-	#endif
 
 	return OutMesh;
 }
