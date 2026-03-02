@@ -41,11 +41,17 @@ FGetWaterInfoResult AWaterPhysics_WaterBody::CalculateWaterBodyWaterInfo(AActor*
 	if (WaterBodySetup->bIncludeVelocity)
 		QueryFlags |= EWaterBodyQueryFlags::ComputeVelocity;
 
-	const FWaterBodyQueryResult QueryResult = WaterBody->GetWaterBodyComponent()->QueryWaterInfoClosestToWorldLocation(Location, QueryFlags, TOptional<float>());
+	const TValueOrError<FWaterBodyQueryResult, EWaterBodyQueryError> QueryResult = WaterBody->GetWaterBodyComponent()->TryQueryWaterInfoClosestToWorldLocation(Location, QueryFlags, TOptional<float>());
 
-	return FGetWaterInfoResult{
-		QueryResult.GetWaterSurfaceLocation(),
-		QueryResult.GetWaterSurfaceNormal(),
-		(int32)(QueryResult.GetQueryFlags() & EWaterBodyQueryFlags::ComputeVelocity) ? QueryResult.GetVelocity() : FVector::ZeroVector
-	};
+	if (QueryResult.HasValue())
+	{
+		const FWaterBodyQueryResult& Value = QueryResult.GetValue();
+		return FGetWaterInfoResult{
+			Value.GetWaterSurfaceLocation(),
+			Value.GetWaterSurfaceNormal(),
+			(int32)(Value.GetQueryFlags() & EWaterBodyQueryFlags::ComputeVelocity) ? Value.GetVelocity() : FVector::ZeroVector
+		};
+	}
+
+	return FGetWaterInfoResult();
 }
